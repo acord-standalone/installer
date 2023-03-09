@@ -57,6 +57,7 @@ namespace AcordStandaloneInstaller
             string discordRelease = GetSelectedDiscordRelease();
 
             installButton.Text = "Installing..";
+            uninstallButton.Enabled = false;
             installButton.Enabled = false;
             releaseGroupBox.Enabled = false;
             TopMost = true;
@@ -128,11 +129,85 @@ namespace AcordStandaloneInstaller
             }
 
             installButton.Text = "Install Acord";
+            uninstallButton.Enabled = true;
             installButton.Enabled = true;
             releaseGroupBox.Enabled = true;
             TopMost = false;
 
             DialogResult resp = MessageBox.Show($"Installation done for {discordRelease}! Do you want to exit installer?", "Acord Standalone Installer", MessageBoxButtons.YesNo);
+            if (resp == DialogResult.Yes) Close();
+        }
+
+        void Uninstall()
+        {
+            string discordRelease = GetSelectedDiscordRelease();
+
+            uninstallButton.Text = "Uninstalling..";
+            uninstallButton.Enabled = false;
+            installButton.Enabled = false;
+            releaseGroupBox.Enabled = false;
+            TopMost = true;
+
+            Process[] processes = Process.GetProcessesByName(discordRelease.ToLower()).ToArray();
+
+            string discordExePath = null;
+
+            for (int i = 0; i < processes.Length; i++)
+            {
+                Process process = processes[i];
+
+                try
+                {
+                    process.Kill();
+                    if (discordExePath == null)
+                    {
+                        discordExePath = process.MainModule.FileName;
+                        Thread.Sleep(100);
+                    }
+                }
+                catch
+                {
+
+                }
+
+            }
+
+            string[] appPaths = Directory.GetDirectories(Path.Combine(localAppData, discordRelease)).Where(i => Path.GetFileName(i).StartsWith("app-")).ToArray();
+
+            for (int i = 0; i < appPaths.Length; i++)
+            {
+                string discordAppPath = appPaths[i];
+
+                string modulesPath = Path.Combine(discordAppPath, "modules");
+
+                if (Directory.Exists(modulesPath))
+                {
+                    string[] desktopCoreModulePaths = Directory.GetDirectories(modulesPath).Where(k => Path.GetFileName(k).StartsWith("discord_desktop_core-")).ToArray();
+
+                    for (int j = 0; j < desktopCoreModulePaths.Length; j++)
+                    {
+                        string modulePath = Path.Combine(desktopCoreModulePaths[j], "discord_desktop_core");
+
+                        File.WriteAllText(Path.Combine(modulePath, "index.js"), $@"module.exports = require(""./core.asar"");");
+                        File.WriteAllText(Path.Combine(modulePath, "package.json"), "{\"name\":\"discord\",\"main\":\"index.js\",\"version\":\"0.0.0\"}");
+                    }
+                }
+
+            }
+
+            if (discordExePath != null)
+            {
+                Thread.Sleep(100);
+                Process.Start(discordExePath);
+            }
+
+            uninstallButton.Text = "Uninstall Acord";
+            uninstallButton.Enabled = true;
+            installButton.Enabled = true;
+            releaseGroupBox.Enabled = true;
+            TopMost = false;
+
+            DialogResult resp = MessageBox.Show($"Uninstallation done for {discordRelease}! Do you want to exit installer?", "Acord Standalone Installer", MessageBoxButtons.YesNo);
             if (resp == DialogResult.Yes) Close();
         }
 
@@ -147,6 +222,11 @@ namespace AcordStandaloneInstaller
         private void installButton_Click(object sender, EventArgs e)
         {
             Install();
+        }
+
+        private void uninstallButton_Click(object sender, EventArgs e)
+        {
+            Uninstall();
         }
     }
 }

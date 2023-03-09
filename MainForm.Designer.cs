@@ -38,6 +38,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.officialDiscordLink = new System.Windows.Forms.LinkLabel();
             this.websiteLink = new System.Windows.Forms.LinkLabel();
+            this.uninstallButton = new System.Windows.Forms.Button();
             this.releaseGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -100,7 +101,7 @@
             // 
             // installButton
             // 
-            this.installButton.Location = new System.Drawing.Point(152, 101);
+            this.installButton.Location = new System.Drawing.Point(151, 77);
             this.installButton.Name = "installButton";
             this.installButton.Size = new System.Drawing.Size(162, 23);
             this.installButton.TabIndex = 2;
@@ -120,7 +121,7 @@
             // officialDiscordLink
             // 
             this.officialDiscordLink.AutoSize = true;
-            this.officialDiscordLink.Location = new System.Drawing.Point(236, 85);
+            this.officialDiscordLink.Location = new System.Drawing.Point(236, 61);
             this.officialDiscordLink.Name = "officialDiscordLink";
             this.officialDiscordLink.Size = new System.Drawing.Size(78, 13);
             this.officialDiscordLink.TabIndex = 4;
@@ -131,7 +132,7 @@
             // websiteLink
             // 
             this.websiteLink.AutoSize = true;
-            this.websiteLink.Location = new System.Drawing.Point(155, 85);
+            this.websiteLink.Location = new System.Drawing.Point(152, 61);
             this.websiteLink.Name = "websiteLink";
             this.websiteLink.Size = new System.Drawing.Size(46, 13);
             this.websiteLink.TabIndex = 5;
@@ -139,11 +140,22 @@
             this.websiteLink.Text = "Website";
             this.websiteLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.websiteLink_LinkClicked);
             // 
+            // uninstallButton
+            // 
+            this.uninstallButton.Location = new System.Drawing.Point(151, 100);
+            this.uninstallButton.Name = "uninstallButton";
+            this.uninstallButton.Size = new System.Drawing.Size(162, 23);
+            this.uninstallButton.TabIndex = 6;
+            this.uninstallButton.Text = "Uninstall Acord";
+            this.uninstallButton.UseVisualStyleBackColor = true;
+            this.uninstallButton.Click += new System.EventHandler(this.uninstallButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(326, 137);
+            this.Controls.Add(this.uninstallButton);
             this.Controls.Add(this.websiteLink);
             this.Controls.Add(this.officialDiscordLink);
             this.Controls.Add(this.label1);
@@ -172,6 +184,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.LinkLabel officialDiscordLink;
         private System.Windows.Forms.LinkLabel websiteLink;
+        private System.Windows.Forms.Button uninstallButton;
     }
 }
 
