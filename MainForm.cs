@@ -32,7 +32,7 @@ namespace AcordStandaloneInstaller
 
         private void websiteLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://armagan.rest/");
+            Process.Start("https://acord.app/");
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -41,6 +41,13 @@ namespace AcordStandaloneInstaller
             discordPTBRadio.Enabled = Directory.Exists(Path.Combine(localAppData, "DiscordPTB"));
             discordCanaryRadio.Enabled = Directory.Exists(Path.Combine(localAppData, "DiscordCanary"));
             discordDevelopmentRadio.Enabled = Directory.Exists(Path.Combine(localAppData, "DiscordDevelopment"));
+
+            if (!discordStableRadio.Enabled && !discordPTBRadio.Enabled && !discordCanaryRadio.Enabled && !discordDevelopmentRadio.Enabled)
+            {
+                MessageBox.Show("Bigisayarınızda geçerli bir Discord uygulaması bulunamadı. Yeniden Discord indirmeyi deneyebilirsiniz.", "Acord Standalone Yükleyici", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Close();
+                return;
+            }
         }
 
         string GetSelectedDiscordRelease()
@@ -56,7 +63,13 @@ namespace AcordStandaloneInstaller
         {
             string discordRelease = GetSelectedDiscordRelease();
 
-            installButton.Text = "Installing..";
+            if (discordRelease == null)
+            {
+                MessageBox.Show("Lütfen geçerli bir Discord versiyonu seçiniz.", "Acord Standalone Yükleyici", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            installButton.Text = "İndiriliyor..";
             uninstallButton.Enabled = false;
             installButton.Enabled = false;
             releaseGroupBox.Enabled = false;
@@ -128,13 +141,13 @@ namespace AcordStandaloneInstaller
                 Process.Start(discordExePath);
             }
 
-            installButton.Text = "Install Acord";
+            installButton.Text = "Yükle / Güncelle";
             uninstallButton.Enabled = true;
             installButton.Enabled = true;
             releaseGroupBox.Enabled = true;
             TopMost = false;
 
-            DialogResult resp = MessageBox.Show($"Installation done for {discordRelease}! Do you want to exit installer?", "Acord Standalone Installer", MessageBoxButtons.YesNo);
+            DialogResult resp = MessageBox.Show($"Acord'u indirme işlemi tamamlandı! Çıkmak ister misiniz?", "Acord Standalone Yükleyici", MessageBoxButtons.YesNo);
             if (resp == DialogResult.Yes) Close();
         }
 
@@ -142,7 +155,13 @@ namespace AcordStandaloneInstaller
         {
             string discordRelease = GetSelectedDiscordRelease();
 
-            uninstallButton.Text = "Uninstalling..";
+            if (discordRelease == null)
+            {
+                MessageBox.Show("Lütfen geçerli bir Discord versiyonu seçiniz.", "Acord Standalone Yükleyici", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            uninstallButton.Text = "Siliniyor..";
             uninstallButton.Enabled = false;
             installButton.Enabled = false;
             releaseGroupBox.Enabled = false;
@@ -201,13 +220,13 @@ namespace AcordStandaloneInstaller
                 Process.Start(discordExePath);
             }
 
-            uninstallButton.Text = "Uninstall Acord";
+            uninstallButton.Text = "Sil";
             uninstallButton.Enabled = true;
             installButton.Enabled = true;
             releaseGroupBox.Enabled = true;
             TopMost = false;
 
-            DialogResult resp = MessageBox.Show($"Uninstallation done for {discordRelease}! Do you want to exit installer?", "Acord Standalone Installer", MessageBoxButtons.YesNo);
+            DialogResult resp = MessageBox.Show($"Acord'u silme işlemi tamamlandı! Çıkmak ister misiniz?", "Acord Standalone Yükleyici", MessageBoxButtons.YesNo);
             if (resp == DialogResult.Yes) Close();
         }
 
