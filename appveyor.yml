@@ -12,7 +12,7 @@ build_script:
       msbuild AcordStandaloneInstaller.sln /t:Build /p:Configuration=Release
 
 artifacts:
-  - path: 'installer\bin\Release\*.*'
+  - path: 'bin\Release\*.*'
     name: 'AcordStandaloneInstaller'
 
 after_build:
