@@ -17,7 +17,7 @@ artifacts:
 
 after_build:
   - 7z a AcordStandaloneInstaller.zip .\bin\Release\*.* -x!*.pdb
-  - dir .\bin\Release
+  - dir .
 
 deploy:
   - provider: Environment
