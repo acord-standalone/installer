@@ -18,6 +18,11 @@ artifacts:
   - path: '.\AcordStandaloneInstaller.zip'
     name: 'AcordStandaloneInstaller'
 
+  - path: '.\bin\Release\AcordStandaloneInstaller.exe'
+    name: 'AcordStandaloneInstallerApp'
+  
+
+
 after_build:
   - 7z a AcordStandaloneInstaller.zip .\bin\Release\*.* -x!*.pdb
 
