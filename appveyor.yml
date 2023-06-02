@@ -1,5 +1,8 @@
 version: 0.0.{build}
 
+# Do not build on tags (GitHub, Bitbucket, GitLab, Gitea)
+skip_tags: true
+
 image: Visual Studio 2019
 
 environment:
@@ -21,3 +24,4 @@ after_build:
 deploy:
   - provider: Environment
     name: acordinstaller-release
+
