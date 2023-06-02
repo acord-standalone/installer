@@ -1,0 +1,23 @@
+version: 1.0.{build}
+
+image: Visual Studio 2019
+
+environment:
+  matrix:
+    - APP_VERSION: '1.0.0'
+
+build_script:
+  - ps: |
+      # Build the application
+      msbuild AcordStandaloneInstaller.sln /t:Build /p:Configuration=Release
+
+artifacts:
+  - path: 'installer\bin\Release\*.*'
+    name: 'AcordStandaloneInstaller'
+
+after_build:
+  - 7z a AcordStandaloneInstaller.zip installer\bin\Release\*.*
+
+deploy:
+  - provider: Environment
+    name: acordinstaller-release
