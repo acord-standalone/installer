@@ -27,7 +27,7 @@ namespace AcordStandaloneInstaller
 
         private void officialDiscordLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://discord.gg/rrtKWh48v9");
+            Process.Start("https://discord.gg/HQ57svW6as");
         }
 
         private void websiteLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -105,7 +105,7 @@ namespace AcordStandaloneInstaller
 
             string acordAsarPath = Path.Combine(acordDataFolder, "acord.asar");
 
-            DownloadFile("https://github.com/acord-standalone/standalone/raw/main/dist/acord.asar", acordAsarPath);
+            DownloadFile("https://api.acord.app/download/asar", acordAsarPath);
 
             File.WriteAllText(Path.Combine(appData, discordRelease.ToLower(), "settings.json"), @"{""openasar"":{""setup"":true},""DANGEROUS_ENABLE_DEVTOOLS_ONLY_ENABLE_IF_YOU_KNOW_WHAT_YOURE_DOING"":true}");
 
