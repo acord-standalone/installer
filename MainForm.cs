@@ -19,10 +19,11 @@ namespace AcordStandaloneInstaller
     {
         static string appData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
         static string localAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-
+        string lastGuiLang = "tr";
         public MainForm()
         {
             InitializeComponent();
+            SetGuiLang("en");
         }
 
         private void officialDiscordLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -44,7 +45,7 @@ namespace AcordStandaloneInstaller
 
             if (!discordStableRadio.Enabled && !discordPTBRadio.Enabled && !discordCanaryRadio.Enabled && !discordDevelopmentRadio.Enabled)
             {
-                MessageBox.Show("Bigisayarınızda geçerli bir Discord uygulaması bulunamadı. Yeniden Discord indirmeyi deneyebilirsiniz.", "Acord Standalone Yükleyici", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(lastGuiLang == "en" ? "Unable find a valid version of Discord on your device. You can try installing Discord again." : "Bigisayarınızda geçerli bir Discord uygulaması bulunamadı. Yeniden Discord indirmeyi deneyebilirsiniz.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Close();
                 return;
             }
@@ -65,11 +66,11 @@ namespace AcordStandaloneInstaller
 
             if (discordRelease == null)
             {
-                MessageBox.Show("Lütfen geçerli bir Discord versiyonu seçiniz.", "Acord Standalone Yükleyici", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(lastGuiLang == "en" ? "Please select a valid version of Discord." : "Lütfen geçerli bir Discord versiyonu seçiniz.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            installButton.Text = "İndiriliyor..";
+            installButton.Text = lastGuiLang == "en" ? "Installing.." : "Yükleniyor..";
             uninstallButton.Enabled = false;
             installButton.Enabled = false;
             releaseGroupBox.Enabled = false;
@@ -141,13 +142,13 @@ namespace AcordStandaloneInstaller
                 Process.Start(discordExePath);
             }
 
-            installButton.Text = "Yükle / Güncelle";
+            installButton.Text = lastGuiLang == "en" ? "Install" : "Yükle";
             uninstallButton.Enabled = true;
             installButton.Enabled = true;
             releaseGroupBox.Enabled = true;
             TopMost = false;
 
-            DialogResult resp = MessageBox.Show($"Acord'u indirme işlemi tamamlandı! Çıkmak ister misiniz?", "Acord Standalone Yükleyici", MessageBoxButtons.YesNo);
+            DialogResult resp = MessageBox.Show(lastGuiLang == "en" ? "Installing process is done! Do you want to quit?" : "Acord'u indirme işlemi tamamlandı! Çıkmak ister misiniz?", this.Text, MessageBoxButtons.YesNo);
             if (resp == DialogResult.Yes) Close();
         }
 
@@ -157,11 +158,11 @@ namespace AcordStandaloneInstaller
 
             if (discordRelease == null)
             {
-                MessageBox.Show("Lütfen geçerli bir Discord versiyonu seçiniz.", "Acord Standalone Yükleyici", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(lastGuiLang == "en" ? "Please select a valid version of Discord." : "Lütfen geçerli bir Discord versiyonu seçiniz.", this.Text, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            uninstallButton.Text = "Siliniyor..";
+            uninstallButton.Text = lastGuiLang == "en" ? "Uninstalling.." : "Siliniyor..";
             uninstallButton.Enabled = false;
             installButton.Enabled = false;
             releaseGroupBox.Enabled = false;
@@ -220,13 +221,13 @@ namespace AcordStandaloneInstaller
                 Process.Start(discordExePath);
             }
 
-            uninstallButton.Text = "Sil";
+            uninstallButton.Text = lastGuiLang == "en" ? "Uninstall" : "Sil";
             uninstallButton.Enabled = true;
             installButton.Enabled = true;
             releaseGroupBox.Enabled = true;
             TopMost = false;
 
-            DialogResult resp = MessageBox.Show($"Acord'u silme işlemi tamamlandı! Çıkmak ister misiniz?", "Acord Standalone Yükleyici", MessageBoxButtons.YesNo);
+            DialogResult resp = MessageBox.Show(lastGuiLang == "en" ? "Uninstalling process is done. Do you want to quit?" : "Acord'u silme işlemi tamamlandı! Çıkmak ister misiniz?", this.Text, MessageBoxButtons.YesNo);
             if (resp == DialogResult.Yes) Close();
         }
 
@@ -246,6 +247,48 @@ namespace AcordStandaloneInstaller
         private void uninstallButton_Click(object sender, EventArgs e)
         {
             Uninstall();
+        }
+
+        private void SetGuiLang(string lang)
+        {
+            lastGuiLang = lang;
+            switch (lang)
+            {
+                case "tr":
+                    {
+                        descLabel.Text = "Bu indirici her zaman Acord'un\nen güncel versiyonunu kurmaktadır.";
+                        turkishRadio.Text = "Türkçe";
+                        englishRadio.Text = "İngilizce";
+                        uninstallButton.Text = "Sil";
+                        installButton.Text = "Yükle";
+                        discordVersionLabel.Text = "Discord Versiyonu";
+                        langLabel.Text = "Yükleyici Dili";
+                        this.Text = "Acord Yükleyici";
+                        break;
+                    }
+                case "en":
+                    {
+                        descLabel.Text = "This downloader always installs\n the latest version of Acord.";
+                        turkishRadio.Text = "Turkish";
+                        englishRadio.Text = "English";
+                        uninstallButton.Text = "Uninstall";
+                        installButton.Text = "Install";
+                        discordVersionLabel.Text = "Discord Version";
+                        langLabel.Text = "Installer Language";
+                        this.Text = "Acord Installer";
+                        break;
+                    }
+            }
+        }
+
+        private void englishRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            SetGuiLang("en");
+        }
+
+        private void turkishRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            SetGuiLang("tr");
         }
     }
 }
